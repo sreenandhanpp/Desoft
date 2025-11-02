@@ -1,6 +1,7 @@
 const Order = require('../MongoDb/models/Order');
 const Product = require('../MongoDb/models/Product');
 const Cart = require('../MongoDb/models/Cart');
+const sendOrderNotification = require('../utils/whatsapp');
 
 // Generate unique order ID
 const generateOrderId = () => {
@@ -75,6 +76,9 @@ exports.placeOrder = async (req, res) => {
         });
 
         await newOrder.save();
+
+        await sendOrderNotification(orderId, customerInfo.name, totalAmount);
+
 
         // Decrease product quantities
         for (const item of cartItems) {
