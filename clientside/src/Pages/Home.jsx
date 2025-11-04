@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Nav from "../components/Nav";
-import { MapPin, Phone, Mail, Clock, Heart, ChevronLeft, ChevronRight } from "lucide-react";
+import {ChevronLeft, ChevronRight } from "lucide-react";
+import diaperIcon from "../assets/diaper-svgrepo-com.svg";
+import wipesIcon from "../assets/wipes-towel-svgrepo-com.svg";
+import feedingIcon from "../assets/baby-milk-svgrepo-com.svg";
 import Footer from "../components/Footer";
 import { useAuth } from "../context/AuthContext";
 import { userAPI } from "../services/api";
@@ -10,12 +13,12 @@ const categories = [
   { name: "Special Offers", products: 2, color: "pink", icon: "🏷️" },
   { name: "Diapers", products: 4, color: "blue", icon: "👶" },
   { name: "Baby Wipes", products: 0, color: "green", icon: "🧻" },
-  { name: "Baby Formula", products: 0, color: "purple", icon: "🥛" },
-  { name: "Baby Clothing", products: 1, color: "orange", icon: "👕" },
-  { name: "Baby Toys", products: 1, color: "yellow", icon: "🧸" },
+  // { name: "Baby Formula", products: 0, color: "purple", icon: "🥛" },
+  // { name: "Baby Clothing", products: 1, color: "orange", icon: "👕" },
+  // { name: "Baby Toys", products: 1, color: "yellow", icon: "🧸" },
   { name: "Baby Care", products: 1, color: "violet", icon: "🧴" },
-  { name: "Feeding", products: 0, color: "pink", icon: "🍽️" },
-  { name: "Others", products: 0, color: "gray", icon: "📦" },
+  // { name: "Feeding", products: 0, color: "pink", icon: "🍼" },
+  // { name: "Others", products: 0, color: "gray", icon: "📦" },
 ];
 
 // Default banner data as fallback
@@ -260,18 +263,18 @@ const Home = () => {
         return "Browse our collection of diapers for your little ones.";
       case "Baby Wipes":
           return "Browse our collection of Baby Wipes for your little ones.";
-      case "Baby Formula":
-          return "Browse our collection of Baby Formula for your little ones.";
-      case "Baby Clothing":
-          return "Browse our collection of Baby Clothing for your little ones.";
-      case "Baby Toys":
-          return "Browse our collection of Baby Toys for your little ones.";
+      // case "Baby Formula":
+      //     return "Browse our collection of Baby Formula for your little ones.";
+      // case "Baby Clothing":
+      //     return "Browse our collection of Baby Clothing for your little ones.";
+      // case "Baby Toys":
+      //     return "Browse our collection of Baby Toys for your little ones.";
       case "Baby Care":
           return "Browse our collection of Baby Care for your little ones.";
-      case "Feeding":
-          return "Browse our collection of Feeding for your little ones.";
-      case "Other":
-          return "Browse our collection of Other for your little ones.";
+      // case "Feeding":
+      //     return "Browse our collection of Feeding for your little ones.";
+      // case "Other":
+      //     return "Browse our collection of Other for your little ones.";
       default:
         return "Browse our collection of diapers for your little ones.";
     }
@@ -282,25 +285,31 @@ const Home = () => {
       <Nav />
       
       {/* Hero Carousel Banner */}
-      <section className="relative w-full h-96 overflow-hidden mt-20" style={{backgroundColor: '#edf8f9'}}>
-        <div className="relative w-full h-full">
-          <div 
-            className="flex transition-transform duration-500 ease-in-out h-full" 
-            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-          >
-            {bannerImages.map((banner, index) => (
-              <div 
-                key={banner.id} 
-                className="min-w-full h-full flex-shrink-0"
-              >
-                <div className="w-full h-full">
-                  <div className="w-full h-full">
-                    <img src={banner.image} alt="Offer" className="w-full h-full object-cover" />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+      <section 
+  className="relative w-full 
+    h-52 sm:h-64 md:h-80 lg:h-96 
+    overflow-hidden mt-20" 
+  style={{backgroundColor: '#edf8f9'}}
+>
+  <div className="relative w-full h-full">
+    <div 
+      className="flex transition-transform duration-500 ease-in-out h-full" 
+      style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+    >
+      {bannerImages.map((banner, index) => (
+        <div 
+          key={banner.id} 
+          className="w-full h-full flex-shrink-0"
+        >
+          <img 
+            src={banner.image} 
+            alt="Offer" 
+            className="w-full h-full object-cover" 
+            style={{minWidth: 0, minHeight: 0}} // Ensures full flexibility
+          />
+        </div>
+      ))}
+    </div>
           
           {/* Navigation Controls */}
           <button 

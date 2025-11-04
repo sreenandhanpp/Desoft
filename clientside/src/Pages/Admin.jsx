@@ -527,6 +527,7 @@ const Admin = () => {
                         <p><span className="font-medium">Name:</span> {order.customerInfo.name}</p>
                         <p><span className="font-medium">Phone:</span> {order.customerInfo.phone}</p>
                         <p><span className="font-medium">Address:</span> {order.customerInfo.address}</p>
+                        <p><span className="font-medium">Comments:</span> {order.delivery.comment}</p>
                       </div>
                     </div>
 
@@ -574,7 +575,7 @@ const Admin = () => {
                         
                         <div className="text-xs text-gray-500">
                           <p><span className="font-medium">Payment:</span> {order.paymentMethod}</p>
-                          <p><span className="font-medium">Delivery:</span> {order.delivery.date} at {order.delivery.time}</p>
+                          <p><span className="font-medium">Delivery:</span> {order.delivery.date}</p>
                         </div>
                       </div>
                     </div>
