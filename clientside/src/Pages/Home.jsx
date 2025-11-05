@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from "react";
 import Nav from "../components/Nav";
 import {ChevronLeft, ChevronRight } from "lucide-react";
-import diaperIcon from "../assets/diaper-svgrepo-com.svg";
-import wipesIcon from "../assets/wipes-towel-svgrepo-com.svg";
-import feedingIcon from "../assets/baby-milk-svgrepo-com.svg";
+import diaperIcon from "../assets/icons/baby_5613334.png";
+import wipesIcon from "../assets/icons/tissues_1660452.png";
+import care from "../assets/icons/baby-products_5613032.png";
+import offer from "../assets/icons/price-tag_8541032.png";
 import Footer from "../components/Footer";
 import { useAuth } from "../context/AuthContext";
 import { userAPI } from "../services/api";
 import { useNavigate } from "react-router-dom";
 
 const categories = [
-  { name: "Special Offers", products: 2, color: "pink", icon: "🏷️" },
-  { name: "Diapers", products: 4, color: "blue", icon: "👶" },
-  { name: "Baby Wipes", products: 0, color: "green", icon: "🧻" },
+  { name: "Special Offers", products: 2, color: "pink", icon: offer },
+  { name: "Diapers", products: 4, color: "blue", icon: diaperIcon },
+  { name: "Baby Wipes", products: 0, color: "green", icon: wipesIcon },
   // { name: "Baby Formula", products: 0, color: "purple", icon: "🥛" },
   // { name: "Baby Clothing", products: 1, color: "orange", icon: "👕" },
   // { name: "Baby Toys", products: 1, color: "yellow", icon: "🧸" },
-  { name: "Baby Care", products: 1, color: "violet", icon: "🧴" },
+  { name: "Baby Care", products: 1, color: "violet", icon: care },
   // { name: "Feeding", products: 0, color: "pink", icon: "🍼" },
   // { name: "Others", products: 0, color: "gray", icon: "📦" },
 ];
@@ -386,29 +387,41 @@ const Home = () => {
       </div>
     </section>
 
-    {/* Categories Section */}
-    <section className="py-16 px-4" style={{backgroundColor: '#edf8f9'}}>
-      <div className="max-w-6xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-12">Shop by Category</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-            {categoriesWithCounts.map((cat, i) => (
-              <div 
-                className={`bg-white rounded-xl p-6 text-center cursor-pointer transition-all duration-300 shadow-lg border-2 hover:shadow-xl ${
-                  selectedCategory === cat.name 
-                    ? 'border-blue-500 shadow-xl transform scale-105' 
-                    : 'border-gray-100 hover:border-gray-200'
-                }`} 
-                key={i}
-                onClick={() => handleCategoryClick(cat.name)}
-              >
-                <div className="text-3xl mb-3">{cat.icon}</div>
-                <h3 className="font-semibold text-gray-800 mb-2">{cat.name}</h3>
-                <p className="text-sm text-gray-500">{cat.products} products</p>
-              </div>
-            ))}
+   {/* Categories Section */}
+<section className="py-16 px-4" style={{ backgroundColor: '#edf8f9' }}>
+  <div className="max-w-6xl mx-auto">
+    <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-12">
+      Shop by Category
+    </h2>
+
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+      {categoriesWithCounts.map((cat, i) => (
+        <div
+          key={i}
+          onClick={() => handleCategoryClick(cat.name)}
+          className={`bg-white rounded-xl p-6 text-center cursor-pointer transition-all duration-300 shadow-lg border-2 hover:shadow-xl ${
+            selectedCategory === cat.name
+              ? 'border-blue-500 shadow-xl transform scale-105'
+              : 'border-gray-100 hover:border-gray-200'
+          }`}
+        >
+          {/* Replace emoji with PNG image */}
+          <div className="flex justify-center mb-3">
+            <img
+              src={cat.icon}          // <-- imported PNG or dynamic path
+              alt={cat.name}
+              className="w-12 h-12 object-contain"
+            />
           </div>
+
+          <h3 className="font-semibold text-gray-800 mb-2">{cat.name}</h3>
+          <p className="text-sm text-gray-500">{cat.products} products</p>
         </div>
-      </section>
+      ))}
+    </div>
+  </div>
+</section>
+
 
       {/* Dynamic Products Section */}
       <section className="py-12 px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16" style={{backgroundColor: '#edf8f9'}}>

@@ -1,24 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { userAPI } from "../services/api";
-import { useAuth } from "../context/AuthContext";
-import { useToast } from "../context/ToastContext";
-import {
-  ShoppingCart,
-  Trash2,
-  Plus,
-  Minus,
-  ArrowLeft,
-  CreditCard,
-  MapPin,
-  Phone,
-  User,
-  Calendar,
-  Clock,
-  AlertTriangle,
-} from "lucide-react";
-import Nav from "../components/Nav";
-import Footer from "../components/Footer";
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { userAPI } from '../services/api';
+import { useAuth } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
+import { ShoppingCart, Trash2, Plus, Minus, ArrowLeft, CreditCard, MapPin, Phone, User, Calendar, Clock, AlertTriangle } from 'lucide-react';
+import cashIcon from "../assets/icons/payment_7017698.png";
+import cardIcon from "../assets/icons/credit-card_1077869.png";
+import Nav from '../components/Nav';
+import Footer from '../components/Footer';
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -488,44 +477,50 @@ const Cart = () => {
                   />
                 </div>
 
-                <div>
-                  <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
-                    <CreditCard className="inline w-3 h-3 sm:w-4 sm:h-4 mr-1" />
-                    Payment Method *
-                  </label>
-                  <div className="space-y-2">
-                    <label className="flex items-center p-2 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
-                      <input
-                        type="radio"
-                        name="paymentMethod"
-                        value="cash"
-                        checked={checkoutForm.paymentMethod === "cash"}
-                        onChange={(e) =>
-                          handleFormChange("paymentMethod", e.target.value)
-                        }
-                        className="mr-2 text-teal-600"
-                      />
-                      <span className="text-xs sm:text-sm">
-                        💵 Cash on Delivery
-                      </span>
-                    </label>
-                    <label className="flex items-center p-2 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
-                      <input
-                        type="radio"
-                        name="paymentMethod"
-                        value="card"
-                        checked={checkoutForm.paymentMethod === "card"}
-                        onChange={(e) =>
-                          handleFormChange("paymentMethod", e.target.value)
-                        }
-                        className="mr-2 text-teal-600"
-                      />
-                      <span className="text-xs sm:text-sm">
-                        💳 Card on Delivery
-                      </span>
-                    </label>
-                  </div>
-                </div>
+                    <div>
+      <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
+        <CreditCard className="inline w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+        Payment Method *
+      </label>
+
+      <div className="space-y-2">
+        {/* Cash on Delivery */}
+        <label className="flex items-center p-2 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+          <input
+            type="radio"
+            name="paymentMethod"
+            value="cash"
+            checked={checkoutForm.paymentMethod === "cash"}
+            onChange={(e) => handleFormChange("paymentMethod", e.target.value)}
+            className="mr-2 text-teal-600"
+          />
+          <img
+            src={cashIcon}
+            alt="Cash on Delivery"
+            className="w-5 h-5 sm:w-6 sm:h-6 mr-2 object-contain"
+          />
+          <span className="text-xs sm:text-sm">Cash on Delivery</span>
+        </label>
+
+        {/* Card on Delivery */}
+        <label className="flex items-center p-2 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
+          <input
+            type="radio"
+            name="paymentMethod"
+            value="card"
+            checked={checkoutForm.paymentMethod === "card"}
+            onChange={(e) => handleFormChange("paymentMethod", e.target.value)}
+            className="mr-2 text-teal-600"
+          />
+          <img
+            src={cardIcon}
+            alt="Card on Delivery"
+            className="w-5 h-5 sm:w-6 sm:h-6 mr-2 object-contain"
+          />
+          <span className="text-xs sm:text-sm">Card on Delivery</span>
+        </label>
+      </div>
+    </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   <div>
