@@ -19,8 +19,8 @@ exports.placeOrder = async (req, res) => {
         if (!customerInfo || !customerInfo.name || !customerInfo.phone || !customerInfo.address) {
             return res.status(400).json({ error: "Customer information is required" });
         }
-        if (!delivery || !delivery.date || !delivery.time) {
-            return res.status(400).json({ error: "Delivery date and time are required" });
+        if (!delivery || !delivery.date) {
+            return res.status(400).json({ error: "Delivery date required" });
         }
         if (!cartItems || cartItems.length === 0) {
             return res.status(400).json({ error: "Cart is empty" });

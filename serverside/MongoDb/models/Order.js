@@ -16,10 +16,11 @@ const orderSchema = new mongoose.Schema({
         name: { type: String, required: true },
         phone: { type: String, required: true },
         address: { type: String, required: true }
+       
     },
     delivery: {
         date: { type: String, required: true },
-        time: { type: String, required: true }
+         comment: {type: String, required: false}
     },
     paymentMethod: { type: String, required: true, default: 'cash' },
     totalAmount: { type: Number, required: true },
