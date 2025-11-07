@@ -286,30 +286,27 @@ const Home = () => {
 
       {/* Hero Carousel Banner */}
       <section
-        className="relative w-full 
-    h-52 sm:h-64 md:h-80 lg:h-96 
-    overflow-hidden mt-20"
-        style={{ backgroundColor: '#edf8f9' }}
-      >
-        <div className="relative w-full h-full">
-          <div
-            className="flex transition-transform duration-500 ease-in-out h-full"
-            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-          >
-            {bannerImages.map((banner, index) => (
-              <div
-                key={banner.id}
-                className="w-full h-full flex-shrink-0"
-              >
-                <img
-                  src={banner.image}
-                  alt="Offer"
-                  className="w-full h-full object-cover"
-                  style={{ minWidth: 0, minHeight: 0 }} // Ensures full flexibility
-                />
-              </div>
-            ))}
-          </div>
+      className="
+        relative w-full overflow-hidden
+        pt-16 sm:pt-18 md:pt-20
+        min-h-[220px] sm:min-h-[280px] md:min-h-[360px]"
+    >
+      <div className="relative w-full h-full">
+        <div
+          className="flex transition-transform duration-700 ease-in-out h-full"
+          style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+        >
+          {bannerImages.map((banner) => (
+            <div key={banner.id} className="w-full h-full flex-shrink-0">
+              <img
+                src={banner.image}
+                alt={banner.alt || 'Banner'}
+                className="w-full h-full object-cover"
+                style={{ minWidth: '100%', minHeight: '100%' }}
+              />
+            </div>
+          ))}
+        </div>
 
           {/* Navigation Controls */}
           <button
@@ -387,12 +384,12 @@ const Home = () => {
 
       {/* Categories Section */}
       <section className="py-16 px-4" style={{ backgroundColor: '#edf8f9' }}>
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-12">
             Shop by Category
           </h2>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-8">
             {categoriesWithCounts.map((cat, i) => (
               <div
                 key={i}

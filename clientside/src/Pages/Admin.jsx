@@ -402,9 +402,9 @@ const Admin = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-green-100">Total Sales</p>
-              <p className="text-2xl font-bold">₹{orders.totalSales}</p>
+              <p className="text-2xl font-bold">QR {orders.totalSales}</p>
             </div>
-            <div className="text-3xl opacity-80">₹</div>
+            <div className="text-3xl opacity-80">QR</div>
           </div>
         </div>
         
@@ -514,7 +514,7 @@ const Admin = () => {
                       <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(order.status)}`}>
                         {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                       </span>
-                      <span className="text-lg font-bold text-gray-900">₹{order.totalAmount}</span>
+                      <span className="text-lg font-bold text-gray-900">QR {order.totalAmount}</span>
                     </div>
                   </div>
 
