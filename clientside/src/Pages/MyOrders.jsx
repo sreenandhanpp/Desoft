@@ -270,6 +270,22 @@ const MyOrders = () => {
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">My Orders</h1>
           <p className="text-sm sm:text-base text-gray-600">Track and manage your orders • {isConnected ? 'Instant live updates' : 'Auto-updates every 5 seconds'}</p>
+          {/* Cancellation Reminder */}
+<div className="bg-yellow-50 border border-yellow-200 text-yellow-800 px-4 py-3 rounded-lg flex items-center gap-3 mt-3">
+  <Phone className="w-4 h-4 flex-shrink-0" />
+  <p className="text-sm">
+    To cancel an order, contact us on :{" "}
+    <a
+      href="https://wa.me/918547865694"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="font-semibold underline hover:text-yellow-900"
+    >
+      +91 85478 65694
+    </a>
+  </p>
+</div>
+
         </div>
 
         {orders.length === 0 ? (

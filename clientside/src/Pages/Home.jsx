@@ -9,6 +9,7 @@ import Footer from "../components/Footer";
 import { useAuth } from "../context/AuthContext";
 import { userAPI } from "../services/api";
 import { useNavigate } from "react-router-dom";
+import WhatsAppFloatingButton from "../components/WhatsappFloatingButton";
 
 const categories = [
   { name: "Special Offers", products: 2, color: "pink", icon: offer },
@@ -283,6 +284,8 @@ const Home = () => {
   return (
     <>
       <Nav />
+            <WhatsAppFloatingButton />
+
 
       {/* Hero Carousel Banner */}
       <section
