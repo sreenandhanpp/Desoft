@@ -310,7 +310,7 @@ const MyOrders = () => {
                         {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                       </span>
                       <span className="text-base sm:text-lg font-bold text-gray-900">
-                        ₹{order.totalAmount}
+                        QR {order.totalAmount}
                       </span>
                     </div>
                   </div>
@@ -343,7 +343,7 @@ const MyOrders = () => {
                                 {item.productId?.name || 'Product Not Found'}
                               </p>
                               <p className="text-xs sm:text-sm text-gray-600">
-                                Qty: {item.quantity} | Size: {item.productId?.size || 'NB'} | ₹{item.price}
+                                Qty: {item.quantity} | Size: {item.productId?.size || 'NB'} | QR {item.price}
                               </p>
                               {item.productId?.description && (
                                 <p className="text-xs text-gray-500 mt-1 truncate hidden sm:block">
@@ -386,8 +386,8 @@ const MyOrders = () => {
                             <span className="truncate">Date: {order.delivery.date}</span>
                           </div>
                           <div className="flex items-center space-x-2">
-                            <Clock className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 flex-shrink-0" />
-                            <span className="truncate">Time: {order.delivery.time}</span>
+                            <Calendar className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 flex-shrink-0" />
+                            <span className="truncate">Comment: {order.delivery.comment}</span>
                           </div>
                           <div className="flex items-center space-x-2">
                             <CreditCard className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 flex-shrink-0" />

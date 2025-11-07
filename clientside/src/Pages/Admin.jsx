@@ -625,12 +625,7 @@ const Admin = () => {
               <option>Select category</option>
               <option>Diapers</option>
               <option>Baby Wipes</option>
-              <option>Baby Formula</option>
-              <option>Baby Clothing</option>
-              <option>Baby Toys</option>
               <option>Baby Care</option>
-              <option>Feeding</option>
-              <option>Others</option>
             </select>
           </div>
           
