@@ -77,7 +77,8 @@ exports.placeOrder = async (req, res) => {
 
         await newOrder.save();
 
-        await sendOrderNotification(orderId, customerInfo.name, totalAmount);
+        // send notification to the admin through whatsapp
+        // await sendOrderNotification(orderId, customerInfo.name, totalAmount);
 
 
         // Decrease product quantities
