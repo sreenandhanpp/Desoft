@@ -571,17 +571,38 @@ const Cart = () => {
                 </div>
               </div>
 
-              <button
+            {/* Minimum Order Alert */}
+{cartTotal < 45 && (
+  <div className="flex items-center gap-2 text-red-600 bg-red-50 border border-red-200 rounded-lg p-3 mt-3">
+    <AlertTriangle className="w-5 h-5" />
+    <span className="text-sm font-medium">Minimum order QR 45</span>
+  </div>
+)}
+
+{/* Place Order Button */}
+<button
   onClick={handlePlaceOrder}
-  disabled={!checkoutForm.address || !checkoutForm.deliveryDate}
-  className="w-full flex items-center justify-center bg-gradient-to-r from-teal-500 to-teal-600 text-white py-3 sm:py-4 rounded-lg hover:from-teal-600 hover:to-teal-700 font-semibold mt-4 sm:mt-6 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all duration-200 text-sm sm:text-base shadow-lg hover:shadow-xl gap-2"
+  disabled={
+    !checkoutForm.address ||
+    !checkoutForm.deliveryDate ||
+    cartTotal < 45
+  }
+  className={`w-full flex items-center justify-center py-3 sm:py-4 rounded-lg font-semibold mt-4 sm:mt-6 transition-all duration-200 text-sm sm:text-base gap-2 shadow-lg ${
+    cartTotal >= 45 && checkoutForm.address && checkoutForm.deliveryDate
+      ? 'bg-gradient-to-r from-teal-500 to-teal-600 text-white hover:from-teal-600 hover:to-teal-700 hover:shadow-xl'
+      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+  }`}
 >
   <img
     src={ordericon}
     alt="order icon"
     className="w-5 h-5 sm:w-6 sm:h-6 object-contain"
   />
-  <span>Place Order - {cartTotal.toFixed(0)} QR</span>
+  <span>
+    {cartTotal < 45
+      ? 'Add more items to reach QR 45'
+      : `Place Order - ${cartTotal.toFixed(0)} QR`}
+  </span>
 </button>
             </div>
           </div>
