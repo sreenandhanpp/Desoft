@@ -32,7 +32,7 @@ const Admin = () => {
   });
 
   // API Base URL
-  const API_BASE = `${import.meta.env.VITE_BACKEND_URL}`;
+  const API_BASE = `${import.meta.env.VITE_BACKEND_URL}/api`;
 
   const [products, setProducts] = useState([]);
   const [banners, setBanners] = useState([]);
