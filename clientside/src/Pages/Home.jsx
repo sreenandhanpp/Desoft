@@ -46,7 +46,7 @@ const Home = () => {
   const [addingToCart, setAddingToCart] = useState({});
 
   // API Base URL
-  const API_BASE = `${import.meta.env.VITE_BACKEND_URL}`;
+  const API_BASE = `${import.meta.env.VITE_BACKEND_URL}/api`;
 
   // Auth and navigation
   const { user, isAuthenticated } = useAuth();
