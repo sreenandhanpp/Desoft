@@ -32,7 +32,7 @@ const Admin = () => {
   });
 
   // API Base URL
-  const API_BASE = 'http://localhost:5000/api';
+  const API_BASE = `${import.meta.env.VITE_BACKEND_URL}`;
 
   const [products, setProducts] = useState([]);
   const [banners, setBanners] = useState([]);
@@ -539,7 +539,7 @@ const Admin = () => {
                           <div key={index} className="flex items-center gap-2">
                             {item.productId?.image && (
                               <img 
-                                src={`http://localhost:5000${item.productId.image}`} 
+                                src={`${import.meta.env.VITE_BACKEND_URL}${item.productId.image}`} 
                                 alt={item.productId?.name || 'Product'} 
                                 className="w-6 h-6 rounded object-cover"
                               />

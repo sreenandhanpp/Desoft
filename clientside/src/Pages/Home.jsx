@@ -46,7 +46,7 @@ const Home = () => {
   const [addingToCart, setAddingToCart] = useState({});
 
   // API Base URL
-  const API_BASE = 'http://localhost:5000/api';
+  const API_BASE = `${import.meta.env.VITE_BACKEND_URL}`;
 
   // Auth and navigation
   const { user, isAuthenticated } = useAuth();
@@ -438,7 +438,7 @@ const Home = () => {
                 >
                   <div className="relative bg-gray-50 w-full h-44 sm:h-52 flex items-center justify-center">
                     <img
-                      src={product.image ? `http://localhost:5000${product.image}` : "/api/placeholder/200/250"}
+                      src={product.image ? `${import.meta.env.VITE_BACKEND_URL}${product.image}` : "/api/placeholder/200/250"}
                       alt={product.name}
                       className="max-h-full max-w-full object-contain"
                     />

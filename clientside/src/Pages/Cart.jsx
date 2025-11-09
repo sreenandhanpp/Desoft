@@ -284,7 +284,7 @@ const Cart = () => {
                     <div className="w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0 mx-auto sm:mx-0">
                       {item.productId?.image ? (
                         <img
-                          src={`http://localhost:5000${item.productId.image}`}
+                          src={`${import.meta.env.VITE_BACKEND_URL}${item.productId.image}`}
                           alt={item.productId.name}
                           className="w-full h-full object-cover rounded-lg border border-gray-200"
                         />
