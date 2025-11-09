@@ -4,7 +4,7 @@ import WhatsAppIcon from "../assets/icons/whatsapp.png"; // update path if neede
 const WhatsAppFloatingButton = () => {
   return (
     <a
-      href="https://wa.me/918547865694" // ✅ Update with your WhatsApp number
+      href="https://wa.me/97450253513" // ✅ Update with your WhatsApp number
       target="_blank"
       rel="noopener noreferrer"
       className="fixed bottom-6 right-6 z-50 group"

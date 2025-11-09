@@ -276,12 +276,12 @@ const MyOrders = () => {
   <p className="text-sm">
     To cancel an order, contact us on :{" "}
     <a
-      href="https://wa.me/918547865694"
+      href="https://wa.me/97450253513"
       target="_blank"
       rel="noopener noreferrer"
       className="font-semibold underline hover:text-yellow-900"
     >
-      +91 85478 65694
+      +974 5025 3513
     </a>
   </p>
 </div>

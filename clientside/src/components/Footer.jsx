@@ -73,6 +73,12 @@ const Footer = () => {
         <div className="border-t border-gray-600 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">
             2024 Desoft. All rights reserved.
+             <button 
+              onClick={() => navigate('/admin-auth')}
+              className="text-cyan-400 hover:text-cyan-300 ml-1 transition-colors cursor-pointer"
+            >
+              Admin
+            </button>
           </p>
           <div className="flex items-center text-gray-400 text-sm mt-4 md:mt-0">
             <span>Made with</span>
