@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { userAPI } from '../services/api';
 import { ShoppingCart, User, Package, LogOut } from 'lucide-react';
+import logo from "../assets/logo.jpg";
 
 const Nav = () => {
   const navigate = useNavigate();
@@ -64,9 +65,13 @@ const Nav = () => {
 
           {/* Logo */}
           <div className="flex items-center space-x-2 sm:space-x-3 md:space-x-4 cursor-pointer" onClick={() => navigate('/')}>
-            <div className="w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 bg-cyan-500 rounded-xl flex items-center justify-center">
-              <span className="text-white font-bold text-lg sm:text-xl">D</span>
-            </div>
+             <div className="w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 bg-cyan-500 rounded-xl flex items-center justify-center overflow-hidden">
+        <img
+          src={logo}
+          alt="Desoft Logo"
+          className="w-full h-full object-cover rounded-xl"
+        />
+        </div>
             <div className="hidden sm:block">
               <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-cyan-600">Desoft</h1>
               <p className="text-xs sm:text-sm md:text-base text-gray-600">Premium baby care products</p>
