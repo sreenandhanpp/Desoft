@@ -1028,49 +1028,64 @@ const Admin = () => {
               </div>
             ) : (
               banners.map((banner) => (
-                <div key={banner._id || banner.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
-                  <div className="flex items-center space-x-4">
-                    <img 
-                      src={banner.image ? `${API_BASE.replace('/api', '')}${banner.image}` : '/api/placeholder/80/60'} 
-                      alt="Offer" 
-                      className="w-20 h-12 rounded-md object-cover bg-gray-200"
-                      onError={(e) => {
-                        e.target.src = '/api/placeholder/80/60';
-                      }}
-                    />
-                    <div>
-                      <div className="flex items-center space-x-2">
-                        <span className={`px-2 py-1 text-xs rounded ${banner.isActive ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-600'}`}>
-                          {banner.isActive ? 'Active' : 'Inactive'}
-                        </span>
-                        <span className="text-sm text-gray-500">
-                          {new Date(banner.createdAt).toLocaleDateString()}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <button
-                      onClick={() => {
-                        setOfferForm({
-                          isActive: banner.isActive
-                        });
-                        setEditingOffer(banner);
-                      }}
-                      className="p-2 text-blue-500 hover:bg-blue-50 rounded"
-                    >
-                      <Edit className="w-4 h-4" />
-                    </button>
-                    <button 
-                      onClick={() => deleteOffer(banner._id || banner.id)}
-                      className="p-2 text-red-500 hover:bg-red-50 rounded"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              ))
-            )}
+  <div
+    key={banner._id || banner.id}
+    className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border border-gray-200 rounded-lg gap-3"
+  >
+    {/* Left Section (Image + Info) */}
+    <div className="flex items-center space-x-4 w-full sm:w-auto">
+      <img
+        src={
+          banner.image
+            ? `${API_BASE.replace('/api', '')}${banner.image}`
+            : '/api/placeholder/80/60'
+        }
+        alt="Offer"
+        className="w-20 h-12 rounded-md object-cover bg-gray-200"
+        onError={(e) => {
+          e.target.src = '/api/placeholder/80/60';
+        }}
+      />
+      <div>
+        <div className="flex flex-wrap items-center gap-2">
+          <span
+            className={`px-2 py-1 text-xs rounded ${
+              banner.isActive
+                ? 'bg-green-100 text-green-600'
+                : 'bg-gray-100 text-gray-600'
+            }`}
+          >
+            {banner.isActive ? 'Active' : 'Inactive'}
+          </span>
+          <span className="text-sm text-gray-500">
+            {new Date(banner.createdAt).toLocaleDateString()}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    {/* Right Section (Action Buttons) */}
+    <div className="flex items-center justify-end space-x-2 w-full sm:w-auto">
+      <button
+        onClick={() => {
+          setOfferForm({
+            isActive: banner.isActive,
+          });
+          setEditingOffer(banner);
+        }}
+        className="p-2 text-blue-500 hover:bg-blue-50 rounded"
+      >
+        <Edit className="w-4 h-4" />
+      </button>
+      <button
+        onClick={() => deleteOffer(banner._id || banner.id)}
+        className="p-2 text-red-500 hover:bg-red-50 rounded"
+      >
+        <Trash2 className="w-4 h-4" />
+      </button>
+    </div>
+  </div>
+)))}
           </div>
         </div>
       </div>
