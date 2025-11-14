@@ -27,8 +27,8 @@ const AdminAuth = () => {
     setError('');
 
     // Hardcoded admin credentials
-    const ADMIN_ID = 'admin';
-    const ADMIN_PASSWORD = '123';
+    const ADMIN_ID = import.meta.env.VITE_ADMIN_EMAIL;
+    const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASS;
 
     try {
       if (formData.adminId === ADMIN_ID && formData.password === ADMIN_PASSWORD) {
