@@ -67,6 +67,7 @@ const sendOrderNotification = async (orderId, name, totalAmount) => {
     return { success: true };
 
   } catch (error) {
+    console.log(error)
     // ✅ Robust error return for logging layer
     return {
       success: false,
