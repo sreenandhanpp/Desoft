@@ -12,13 +12,14 @@ import { useNavigate } from "react-router-dom";
 import WhatsAppFloatingButton from "../components/WhatsappFloatingButton";
 
 const categories = [
-  { name: "Special Offers", products: 2, color: "pink", icon: offer },
+  
   { name: "Diapers", products: 4, color: "blue", icon: diaperIcon },
   { name: "Baby Wipes", products: 0, color: "green", icon: wipesIcon },
   // { name: "Baby Formula", products: 0, color: "purple", icon: babyFormula },
   // { name: "Baby Clothing", products: 1, color: "orange", icon: "👕" },
   // { name: "Baby Toys", products: 1, color: "yellow", icon: "🧸" },
   { name: "Baby Care", products: 1, color: "violet", icon: care },
+  { name: "Special Offers", products: 2, color: "pink", icon: offer },
   // { name: "Feeding", products: 0, color: "pink", icon: "🍼" },
   // { name: "Others", products: 0, color: "gray", icon: "📦" },
 ];
