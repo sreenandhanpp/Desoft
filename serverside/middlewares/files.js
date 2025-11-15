@@ -2,7 +2,7 @@ const multer = require('multer');
 const fs = require('fs');
 
 // Path where your Render disk is mounted
-const UPLOAD_PATH = '/uploads';
+const UPLOAD_PATH = '/opt/render/project/uploads';
 
 // Ensure folder exists (Render disk will already create it)
 if (!fs.existsSync(UPLOAD_PATH)) {
