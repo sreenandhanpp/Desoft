@@ -1,187 +1,211 @@
 const Product = require('../MongoDb/models/Product');
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
+const { PutObjectCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3");
+const r2 = require('../utils/r2');
+require("dotenv").config();
 
-// Set up multer for file uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const uploadDir = 'uploads/';
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
-    }
-    cb(null, uploadDir);
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname);
-  },
-});
+// ================= MULTER MEMORY STORAGE =================
 
-const upload = multer({ 
+const storage = multer.memoryStorage();
+
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith("image/")) cb(null, true);
+  else cb(new Error("Only image files allowed"), false);
+};
+
+exports.uploadMiddleware = multer({
   storage,
-  fileFilter: (req, file, cb) => {
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
-    if (allowedTypes.includes(file.mimetype)) {
-      cb(null, true);
-    } else {
-      cb(new Error('Invalid file type. Only JPEG, PNG, JPG, GIF are allowed.'));
-    }
-  },
-  limits: { fileSize: 5 * 1024 * 1024 }
-});
+  fileFilter,
+  limits: { fileSize: 5 * 1024 * 1024 } 
+}).single("image");
 
-// Create Product
+
+// ================= R2 UPLOAD =================
+
+async function uploadToR2(file) {
+  const fileName = "product-" + Date.now() + path.extname(file.originalname);
+
+  await r2.send(
+    new PutObjectCommand({
+      Bucket: process.env.R2_BUCKET,
+      Key: fileName,
+      Body: file.buffer,
+      ContentType: file.mimetype
+    })
+  );
+
+  return fileName; // store only the filename
+}
+
+
+// ================= R2 DELETE =================
+
+async function deleteFromR2(fileName) {
+  try {
+    if (!fileName) return;
+
+    await r2.send(
+      new DeleteObjectCommand({
+        Bucket: process.env.R2_BUCKET,
+        Key: fileName
+      })
+    );
+
+  } catch (err) {
+    console.log("R2 delete error (ignored):", err.message);
+  }
+}
+
+
+// ================= CONTROLLERS =================
+
+
+// CREATE PRODUCT
 exports.createProduct = async (req, res) => {
-    try {
-        console.log('Received product creation request:', req.body);
-        console.log('Received files:', req.files);
-        
-        const { name, description, price, category, size, stock, count, originalPrice, onOffer, outOfStock } = req.body;
-        
-        console.log('Extracted fields:', { name, description, price, category, size, stock, onOffer, outOfStock });
-        
-        if (!name || !description || !price || !category) {
-            console.log('Validation failed - missing required fields');
-            return res.status(400).json({ error: "Name, description, price, and category are required" });
-        }
+  try {
+    const { name, description, price, category } = req.body;
 
-        // Handle image upload
-        let imagePath = null;
-        if (req.file) {
-            imagePath = `/uploads/${req.file.filename}`;
-            console.log('Image uploaded:', imagePath);
-        }
+    if (!name || !description || !price || !category)
+      return res.status(400).json({ error: "Name, description, price, category required" });
 
-        const product = new Product({
-            name,
-            description,
-            price,
-            category,
-            image: imagePath,
-            size,
-            stock,
-            count,
-            originalPrice: originalPrice ? parseFloat(originalPrice) : undefined,
-            onOffer: onOffer === 'true' || onOffer === true,
-            outOfStock: outOfStock === 'true' || outOfStock === true
-        });
+    let imageFileName = null;
+    if (req.file) imageFileName = await uploadToR2(req.file);
 
-        console.log('Created product object:', product);
-        
-        await product.save();
-        console.log('Product saved successfully:', product);
-        
-        res.status(201).json({ message: "Product created successfully", product: product });
-    } catch (err) {
-        console.error('Product creation error:', err);
-        res.status(500).json({ error: "Failed to create product", details: err.message });
-    }
+    const product = new Product({
+      ...req.body,
+      price: parseFloat(req.body.price),
+      originalPrice: req.body.originalPrice ? parseFloat(req.body.originalPrice) : undefined,
+      stock: req.body.stock ? parseInt(req.body.stock) : undefined,
+      onOffer: req.body.onOffer === "true",
+      outOfStock: req.body.outOfStock === "true",
+      image: imageFileName
+    });
+
+    await product.save();
+
+    res.status(201).json({ message: "Product created", product });
+
+  } catch (err) {
+    res.status(500).json({ error: "Failed to create product", details: err.message });
+  }
 };
 
-// Delete Product
-exports.deleteProduct = async (req, res) => {
-    try {
-        const { productId } = req.params;
-        const product = await Product.findById(productId);
-        if (!product) {
-            return res.status(404).json({ error: "Product not found" });
-        }
 
-        await product.deleteOne();
-        res.status(200).json({ message: "Product deleted successfully" });
-    } catch (err) {
-        res.status(500).json({ error: "Failed to delete product", details: err.message });
-    }
-};
-
-// Update Product
+// UPDATE PRODUCT
 exports.updateProduct = async (req, res) => {
-    try {
-        console.log('Received product update request:', req.body);
-        console.log('Received files:', req.file);
-        
-        const { productId } = req.params;
-        const updates = req.body;
+  try {
+    const { productId } = req.params;
 
-        const product = await Product.findById(productId);
-        if (!product) {
-            return res.status(404).json({ error: "Product not found" });
-        }
+    const product = await Product.findById(productId);
+    if (!product)
+      return res.status(404).json({ error: "Product not found" });
 
-        // Handle image upload if new image is provided
-        if (req.file) {
-            updates.image = `/uploads/${req.file.filename}`;
-            console.log('New image uploaded:', updates.image);
-        }
-
-        // Convert string values to appropriate types
-        if (updates.price) updates.price = parseFloat(updates.price);
-        if (updates.originalPrice) updates.originalPrice = parseFloat(updates.originalPrice);
-        if (updates.stock) updates.stock = parseInt(updates.stock);
-        if (updates.onOffer !== undefined) updates.onOffer = updates.onOffer === 'true' || updates.onOffer === true;
-        if (updates.outOfStock !== undefined) updates.outOfStock = updates.outOfStock === 'true' || updates.outOfStock === true;
-
-        Object.assign(product, updates); // Merge changes
-        await product.save();
-
-        console.log('Product updated successfully:', product);
-        res.status(200).json({ message: "Product updated successfully", product });
-    } catch (err) {
-        console.error('Product update error:', err);
-        res.status(500).json({ error: "Failed to update product", details: err.message });
+    // If new image uploaded → delete old + upload new
+    if (req.file) {
+      if (product.image) await deleteFromR2(product.image);
+      product.image = await uploadToR2(req.file);
     }
+
+    // update text fields
+    const body = req.body;
+    Object.assign(product, {
+      name: body.name || product.name,
+      description: body.description || product.description,
+      price: body.price ? parseFloat(body.price) : product.price,
+      originalPrice: body.originalPrice ? parseFloat(body.originalPrice) : product.originalPrice,
+      category: body.category || product.category,
+      size: body.size || product.size,
+      stock: body.stock ? parseInt(body.stock) : product.stock,
+      count: body.count || product.count,
+      onOffer: body.onOffer ? body.onOffer === "true" : product.onOffer,
+      outOfStock: body.outOfStock ? body.outOfStock === "true" : product.outOfStock
+    });
+
+    await product.save();
+
+    res.status(200).json({ message: "Product updated", product });
+
+  } catch (err) {
+    res.status(500).json({ error: "Failed to update product", details: err.message });
+  }
 };
 
-// Get Product by ID
+
+// DELETE PRODUCT
+exports.deleteProduct = async (req, res) => {
+  try {
+    const { productId } = req.params;
+
+    const product = await Product.findById(productId);
+    if (!product)
+      return res.status(404).json({ error: "Product not found" });
+
+    if (product.image) await deleteFromR2(product.image);
+
+    await product.deleteOne();
+    res.status(200).json({ message: "Product deleted" });
+
+  } catch (err) {
+    res.status(500).json({ error: "Failed to delete product", details: err.message });
+  }
+};
+
+
+// GET PRODUCT BY ID
 exports.getProductById = async (req, res) => {
-    try {
-        const { productId } = req.params;
-        const product = await Product.findById(productId);
-        if (!product) {
-            return res.status(404).json({ error: "Product not found" });
-        }
-        res.status(200).json({ product });
-    } catch (err) {
-        res.status(500).json({ error: "Failed to fetch product", details: err.message });
-    }
+  try {
+    const product = await Product.findById(req.params.productId);
+    if (!product)
+      return res.status(404).json({ error: "Product not found" });
+
+    res.status(200).json({ product });
+
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch product", details: err.message });
+  }
 };
 
-// Get All Products
+
+// GET ALL PRODUCTS
 exports.getAllProducts = async (req, res) => {
-    try {
-        const products = await Product.find();
-        res.status(200).json({ products });
-    } catch (err) {
-        res.status(500).json({ error: "Failed to fetch products", details: err.message });
-    }
+  try {
+    const products = await Product.find();
+    res.status(200).json({ products });
+
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch products", details: err.message });
+  }
 };
 
-// Get Products by Category
+
+// GET PRODUCTS BY CATEGORY
 exports.getProductsByCategory = async (req, res) => {
-    try {
-        const { category } = req.params;
-        const products = await Product.find({ category });
-        if (!products.length) {
-            return res.status(404).json({ error: "No products found in this category" });
-        }
-        res.status(200).json({ products });
-    } catch (err) {
-        res.status(500).json({ error: "Failed to fetch products by category", details: err.message });
-    }
+  try {
+    const products = await Product.find({ category: req.params.category });
+
+    if (!products.length)
+      return res.status(404).json({ error: "No products in this category" });
+
+    res.status(200).json({ products });
+
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch category products", details: err.message });
+  }
 };
 
-// Get Products on Offer
+
+// GET PRODUCTS ON OFFER
 exports.getProductsOnOffer = async (req, res) => {
-    try {
-        const products = await Product.find({ onOffer: true });
-        if (!products.length) {
-            return res.status(404).json({ error: "No products on offer found" });
-        }
-        res.status(200).json({ products });
-    } catch (err) {
-        res.status(500).json({ error: "Failed to fetch products on offer", details: err.message });
-    }
-};
+  try {
+    const products = await Product.find({ onOffer: true });
 
-// Export upload middleware
-exports.uploadMiddleware = upload.single('image');
+    if (!products.length)
+      return res.status(404).json({ error: "No products on offer" });
+
+    res.status(200).json({ products });
+
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch offer products", details: err.message });
+  }
+};
