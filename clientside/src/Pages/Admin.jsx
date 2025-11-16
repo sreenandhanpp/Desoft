@@ -782,7 +782,7 @@ const Admin = () => {
               <div key={product._id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
                 <div className="flex items-center space-x-4">
                   <img 
-                    src={product.image ? `${API_BASE.replace('/api', '')}${product.image}` : '/api/placeholder/60/60'} 
+                    src={product.image ? `${import.meta.env.VITE_R2_PUBLIC_URL}/${product.image}` : '/api/placeholder/60/60'} 
                     alt={product.name} 
                     className="w-12 h-12 rounded-md object-cover bg-gray-200"
                     onError={(e) => {
@@ -894,6 +894,7 @@ const Admin = () => {
             {banners.map((banner) => (
               <div key={banner.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
                 <div className="flex items-center space-x-4">
+                  <h1>{banner.image} hello</h1>
                   <img src={banner.image} alt="Banner" className="w-20 h-12 rounded-md object-cover bg-gray-200" />
                   <div>
                     <div className="flex items-center space-x-2">
@@ -1037,7 +1038,7 @@ const Admin = () => {
       <img
         src={
           banner.image
-            ? `${API_BASE.replace('/api', '')}${banner.image}`
+            ? `${import.meta.env.VITE_R2_PUBLIC_URL}/${banner.image}`
             : '/api/placeholder/80/60'
         }
         alt="Offer"
